@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TATU eslatma boti — taqdimot</title>
+<meta name="description" content="TATU talabalari uchun dars jadvali va topshiriq muddatlarini eslatadigan Telegram bot.">
+<style>
+:root{
+  --paper:#f5f1e8;--ink:#14212b;--ink-2:#1d2f3d;--muted:#54606b;--line:#d9d2c3;
+  --signal:#b93a1c;--signal-on-dark:#ff8a66;--chat:#d7e3ec;--bubble:#fff;--link:#1f6fb2;--muted-on-dark:#a9b6c1;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --pad:clamp(20px,5vw,72px);
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;background:var(--paper)}
+@media (min-width:900px) and (min-height:640px){html{scroll-snap-type:y proximity}}
+body{font:18px/1.5 var(--sans);color:var(--ink)}
+.slide{min-height:100vh;min-height:100dvh;padding:clamp(40px,7vh,72px) var(--pad);display:flex;flex-direction:column;justify-content:center;scroll-snap-align:start;position:relative}
+.wrap{width:100%;max-width:1160px;margin:0 auto}
+.dark{background:var(--ink);color:#f5f1e8}
+.split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);gap:clamp(32px,6vw,88px);align-items:center}
+.eyebrow{font-size:14px;font-weight:600;color:var(--signal);margin-bottom:14px}
+.dark .eyebrow{color:var(--signal-on-dark)}
+h1,h2{font-family:var(--serif);font-weight:700;letter-spacing:-.01em;line-height:1.08}
+h1{font-size:clamp(46px,8.4vw,108px)}
+h2{font-size:clamp(32px,4.4vw,56px);max-width:17em}
+.lead{font-size:clamp(18px,1.7vw,22px);max-width:34em;margin-top:18px;color:var(--muted)}
+.dark .lead{color:var(--muted-on-dark)}
+.count{display:flex;align-items:baseline;gap:clamp(18px,4vw,56px);margin-top:clamp(36px,8vh,76px);font-family:var(--serif);font-variant-numeric:lining-nums}
+.count div{font-size:clamp(64px,13vw,176px);line-height:.9;font-weight:700}
+.count small{display:block;font:500 15px/1.4 var(--sans);color:var(--muted-on-dark);margin-top:12px}
+.count div:last-child{color:var(--signal-on-dark)}
+.problems{list-style:none;padding:0;margin-top:clamp(28px,5vh,48px);border-top:1px solid var(--line)}
+.problems li{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;padding:18px 0;border-bottom:1px solid var(--line)}
+.problems b{font-family:var(--serif);font-size:clamp(20px,2vw,26px);line-height:1.25}
+.problems span{color:var(--muted)}
+.chat{background:var(--chat);border-radius:18px;padding:18px 16px;display:flex;flex-direction:column;gap:8px}
+.msg{background:var(--bubble);color:var(--ink);border-radius:14px 14px 14px 4px;padding:10px 13px;font-size:16px;line-height:1.42;white-space:pre-line;max-width:100%}
+.msg .t{display:block;text-align:right;font-size:12px;color:var(--muted);margin-top:2px}
+.kbd{display:flex;gap:6px}
+.kbd span{flex:1;text-align:center;background:rgba(20,33,43,.72);color:#fff;border-radius:9px;padding:9px 6px;font-size:14px}
+.points{list-style:none;padding:0;margin-top:26px;max-width:32em}
+.points li{padding:11px 0;border-top:1px solid var(--line)}
+.dark .points li{border-color:#33475a}
+.timeline{margin-top:clamp(36px,8vh,72px);position:relative}
+.track{height:3px;background:#3b4f60}
+.marks{display:grid;grid-template-columns:repeat(4,1fr);margin-top:-9px}
+.mark i{display:block;width:15px;height:15px;border-radius:50%;background:#f5f1e8}
+.mark.stop i{background:transparent;border:3px solid #6e8090}
+.mark b{display:block;font-family:var(--serif);font-size:clamp(26px,3.1vw,40px);margin-top:14px;line-height:1.05}
+.mark span{display:block;color:var(--muted-on-dark);font-size:16px;margin-top:6px;padding-right:18px}
+.mark.stop b{color:var(--muted-on-dark);text-decoration:line-through}
+.mark.action b{color:var(--signal-on-dark)}
+.phones{display:flex;gap:clamp(16px,3vw,40px);margin-top:clamp(24px,4vh,40px);justify-content:flex-start}
+.phones figure{flex:0 0 auto;margin:0}
+.phones img{display:block;height:min(58vh,520px);width:auto;border-radius:18px;border:1px solid var(--line);background:#fff}
+.phones figcaption{margin-top:10px;font-size:15px;color:var(--muted);max-width:15em}
+.flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:clamp(10px,2vw,24px);align-items:center;margin-top:clamp(30px,6vh,56px)}
+.flow div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px}
+.flow b{display:block;font-family:var(--serif);font-size:clamp(22px,2.2vw,30px);line-height:1.15}
+.flow span{display:block;color:var(--muted);font-size:16px;margin-top:6px}
+.flow em{font-style:normal;color:var(--signal);font-size:26px}
+.note{margin-top:26px;padding-left:14px;border-left:3px solid var(--signal);max-width:44em;color:var(--muted);font-size:17px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:clamp(30px,6vh,56px)}
+.stats b{display:block;font-family:var(--serif);font-size:clamp(40px,5.4vw,72px);line-height:1}
+.stats span{display:block;margin-top:10px;color:var(--muted-on-dark);font-size:16px;padding-right:12px}
+.status{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,44px);margin-top:clamp(28px,5vh,48px)}
+.status h3{font:600 15px/1.3 var(--sans);padding-bottom:10px;border-bottom:2px solid var(--ink)}
+.status .next h3{border-color:var(--signal);color:var(--signal)}
+.status ul{list-style:none;padding:0}
+.status li{padding:10px 0;border-bottom:1px solid var(--line);font-size:17px}
+.pager{position:fixed;right:18px;bottom:16px;font:500 14px var(--sans);color:var(--muted);background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:5px 9px;font-variant-numeric:tabular-nums}
+:focus-visible{outline:3px solid var(--link);outline-offset:3px}
+@media (max-width:899px){
+  body{font-size:17px}
+  .slide{min-height:0;padding-top:56px;padding-bottom:56px}
+  .slide.cover{min-height:100svh}
+  .split{grid-template-columns:minmax(0,1fr)}
+  .problems li{grid-template-columns:minmax(0,1fr);gap:4px}
+  .marks{grid-template-columns:minmax(0,1fr);margin-top:0;gap:22px}
+  .track{display:none}
+  .mark i{display:none}
+  .mark b{margin-top:0}
+  .phones{overflow-x:auto;scroll-snap-type:x mandatory;margin-right:calc(var(--pad)*-1);padding-right:var(--pad);padding-bottom:6px}
+  .phones figure{scroll-snap-align:start}
+  .phones img{height:auto;width:min(72vw,300px)}
+  .flow{grid-template-columns:minmax(0,1fr)}
+  .flow em{transform:rotate(90deg);justify-self:start;margin-left:12px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .status{grid-template-columns:minmax(0,1fr)}
+  .pager{display:none}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{.slide{min-height:auto;page-break-after:always}.pager{display:none}html{scroll-snap-type:none}}
+</style>
+</head>
+<body>
+<main>
+
+<section class="slide dark cover" aria-label="Muqova">
+  <div class="wrap">
+    <p class="eyebrow">TATU talabalari uchun Telegram yordamchi</p>
+    <h1>Muddat endi jimgina o‘tib ketmaydi</h1>
+    <div class="count" aria-label="Eslatmalar: 72, 24 va 3 soat qolganda">
+      <div>72<small>soat qoldi</small></div>
+      <div>24<small>soat qoldi</small></div>
+      <div>3<small>soat qoldi</small></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" aria-labelledby="s2">
+  <div class="wrap">
+    <p class="eyebrow">Muammo</p>
+    <h2 id="s2">LMS hamma narsani saqlaydi, lekin talabaga hech narsa yozmaydi</h2>
+    <ul class="problems">
+      <li><b>Muddat sezilmay o‘tadi</b><span>Saytga kirmagan talaba topshiriqni unutadi. Bitta amaliy ish 5–10 ball.</span></li>
+      <li><b>Ertalab jadval qidiriladi</b><span>Haftalik to‘rdan toq yoki juft haftani ajratib, xonani topish kerak.</span></li>
+      <li><b>O‘zgarishlar yo‘qoladi</b><span>Xona almashgani va e’lonlar guruh chatlarida ko‘milib ketadi.</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide" aria-labelledby="s3">
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow">Har kuni ertalab</p>
+      <h2 id="s3">Bugungi darslar o‘zi keladi</h2>
+      <p class="lead">Talaba vaqtni o‘zi tanlaydi. Xabarda faqat shu haftaga tegishli darslar va yaqin muddatlar bo‘ladi.</p>
+      <ul class="points">
+        <li>O‘zbek va rus tillarida</li>
+        <li>Dars yo‘q kuni bezovta qilmaydi</li>
+        <li>Sukut soatlarini har kim o‘zi belgilaydi</li>
+      </ul>
+    </div>
+    <div class="chat" aria-label="Bot xabari namunasi">
+      <div class="msg">📅 Dushanba, 9-noyabr · TOQ hafta
+08:00 · E-312 · Operatsion tizimlar (Ma'ruza)
+09:30 · E-110 · Ma'lumotlar bazasi (Amaliyot)
+⏰ 2 ta topshiriq muddati yaqin → /deadlines<span class="t">07:00</span></div>
+      <div class="kbd"><span>📅 Bugun</span><span>🗓 Hafta</span><span>⏰ Deadline'lar</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide dark" aria-labelledby="s4">
+  <div class="wrap">
+    <p class="eyebrow">Eslatmalar</p>
+    <h2 id="s4">Faqat ishini hali yubormaganga eslatadi</h2>
+    <div class="timeline">
+      <div class="track"></div>
+      <div class="marks">
+        <div class="mark"><i></i><b>72 soat</b><span>Birinchi eslatma</span></div>
+        <div class="mark action"><i></i><b>“Yubordim”</b><span>Talaba bitta tugmani bosdi</span></div>
+        <div class="mark stop"><i></i><b>24 soat</b><span>Bu eslatma endi kelmaydi</span></div>
+        <div class="mark stop"><i></i><b>3 soat</b><span>Bu ham kelmaydi</span></div>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:clamp(30px,6vh,52px)">Topshiriq kech qo‘shilsa, uchta xabar birdan kelmaydi: bitta “muddat yaqin” xabari yetadi.</p>
+  </div>
+</section>
+
+<section class="slide" aria-labelledby="s5">
+  <div class="wrap">
+    <p class="eyebrow">Telegram ichidagi ilova</p>
+    <h2 id="s5">Butun oy bitta ekranda</h2>
+    <div class="phones">
+      <figure><img src="assets/calendar.png" width="420" height="860" alt="Oylik kalendar: darslar va muddatlar nuqtalar bilan belgilangan"><figcaption>Darslar va muddatlar kalendarda</figcaption></figure>
+      <figure><img src="assets/deadlines.png" width="420" height="860" alt="Topshiriqlar ro‘yxati, qolgan soatlar va Yubordim tugmasi"><figcaption>Qolgan vaqt va “Yubordim” tugmasi</figcaption></figure>
+      <figure><img src="assets/editor.png" width="420" height="860" alt="Sardor uchun jadval muharriri"><figcaption>Sardor uchun jadval muharriri</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="slide" aria-labelledby="s6">
+  <div class="wrap split">
+    <div>
+      <p class="eyebrow">Guruh sardori</p>
+      <h2 id="s6">Bir marta kiritadi, butun guruh biladi</h2>
+      <p class="lead">Sardor jadvalni bir xabarda yozadi. O‘zgarish yoki e’lon guruhning har bir a’zosiga shaxsan yetadi.</p>
+      <ul class="points">
+        <li>Jadval, topshiriq, dars o‘zgarishi va e’lon bitta panelda</li>
+        <li>Talaba topshiriq taklif qiladi, sardor tasdiqlaydi</li>
+        <li>E’lon kimga yetgani haqida hisobot keladi</li>
+      </ul>
+    </div>
+    <div class="chat" aria-label="Sardor paneli va o‘zgarish xabari namunasi">
+      <div class="msg">🛠 Sardor paneli · «315-24»</div>
+      <div class="kbd"><span>🗓 Jadval</span><span>➕ Topshiriq</span></div>
+      <div class="kbd"><span>🔄 Jadval o'zgarishi</span><span>📣 E'lon</span></div>
+      <div class="msg">🔄 10-noyabr: Operatsion tizimlar 09:30 ga, E-110 xonaga ko'chdi<span class="t">guruhga yuborildi</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" aria-labelledby="s7">
+  <div class="wrap">
+    <p class="eyebrow">LMS bilan sinxronlash</p>
+    <h2 id="s7">Guruhdan bitta odam ulasa, hamma foyda ko‘radi</h2>
+    <div class="flow">
+      <div><b>1 ko‘ngilli</b><span>O‘z roziligi bilan ulaydi, parol so‘ralmaydi</span></div>
+      <em aria-hidden="true">→</em>
+      <div><b>Har 30 daqiqada</b><span>Yangi topshiriq va jadval o‘zgarishi tekshiriladi</span></div>
+      <em aria-hidden="true">→</em>
+      <div><b>Butun guruh</b><span>Eslatma va o‘zgarish xabarlarini oladi</span></div>
+    </div>
+    <p class="note">Hozirgi holat: LMS javoblarini taqlid qiluvchi sinov serverida ishlaydi. Haqiqiy LMS bilan ishga tushirish universitet roziligidan keyin. Sayt tuzilishi o‘zgarsa, bot ma’lumotga tegmasdan to‘xtaydi va adminni ogohlantiradi.</p>
+  </div>
+</section>
+
+<section class="slide dark" aria-labelledby="s8">
+  <div class="wrap">
+    <p class="eyebrow">Ishonchlilik</p>
+    <h2 id="s8">Eslatma botida eng katta xato — xabar yetib bormasligi</h2>
+    <div class="stats">
+      <div><b>445</b><span>avtomatik test o‘tdi</span></div>
+      <div><b>86%</b><span>kod test bilan qamrab olingan</span></div>
+      <div><b>5000</b><span>talabaga mo‘ljallangan</span></div>
+      <div><b>2 til</b><span>o‘zbek va rus</span></div>
+    </div>
+    <ul class="points" style="max-width:44em;margin-top:clamp(26px,5vh,44px)">
+      <li>Server qayta ishga tushsa ham ertalabki xabar yo‘qolmaydi va ikki marta kelmaydi</li>
+      <li>Ma’lumotlar shifrlangan holda zaxiralanadi, tiklash amalda sinab ko‘rilgan</li>
+    </ul>
+  </div>
+</section>
+
+<section class="slide" aria-labelledby="s9">
+  <div class="wrap">
+    <p class="eyebrow">Holat</p>
+    <h2 id="s9">Kod tayyor, navbat haqiqiy guruhlarda</h2>
+    <div class="status">
+      <div><h3>Tayyor va sinovdan o‘tgan</h3><ul><li>Bot: jadval, eslatma, e’lon</li><li>Telegram ilovasi</li><li>Sardor paneli va admin panel</li><li>Monitoring va zaxira</li></ul></div>
+      <div><h3>Pilotdan oldin</h3><ul><li>Server va domen</li><li>Universitet roziligi</li><li>Haqiqiy LMS bilan sinov</li></ul></div>
+      <div class="next"><h3>Keyingi bosqich</h3><ul><li>1 fakultetda 2 haftalik pilot</li><li>Baho va davomat xabarlari</li><li>Imtihon kalendari</li></ul></div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="pager" aria-hidden="true"><span id="n">1</span> / <span id="t">9</span></div>
+<script>
+(() => {
+  const slides = [...document.querySelectorAll(".slide")];
+  const n = document.getElementById("n");
+  document.getElementById("t").textContent = slides.length;
+  let current = 0;
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) { current = slides.indexOf(e.target); n.textContent = current + 1; }
+  }), { threshold: .55 });
+  slides.forEach(s => io.observe(s));
+  addEventListener("keydown", e => {
+    const forward = ["ArrowRight", "ArrowDown", "PageDown", " "].includes(e.key);
+    const back = ["ArrowLeft", "ArrowUp", "PageUp"].includes(e.key);
+    if (!forward && !back) return;
+    e.preventDefault();
+    const next = Math.max(0, Math.min(slides.length - 1, current + (forward ? 1 : -1)));
+    slides[next].scrollIntoView();
+  });
+})();
+</script>
+</body>
+</html>
